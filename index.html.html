@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Carlo's Blog </title>
+	<link rel="stylesheet" type="text/css" href="Ello.css">
+	<meta charset="utf-8">
+	<style>
+
+</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="mainsize">
+	<div class="header">  ENLIGHT PERSONAL PROFILE  </div>
+		<ul>
+			<li>	<button class="block" onclick="Check(2)">	General Info</button></li>
+			<li> 	<button class="block" onclick="Check(1)">	Others</button></li>
+			<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn">Port File</a>
+			<div class="dropdown-content">
+			  <a href="#">TBF</a>
+			</div>
+		  </li>
+		</ul>
+	<div class="row">
+		<div class="column middle" style="background-color:#7fe57f;">
+<!–– Batas Hidup ––>
+		<div id="profile">
+			<table>
+			<tr>
+				<th> Profile </th>
+				<th> Data </th>
+			</tr>
+			<tr>
+			<td rowspan="6"> <img src="enlight.jpg"  width="120"></td>
+			</tr>
+				
+			<tr>
+				<td> Name : Enlighten </td>
+			</tr>
+			<tr>
+				<td> DOB : 5 Juni 1999 </td>
+			</tr>
+			<tr>
+				<td> Occupation : Student </td>
+			</tr>
+			<tr>
+				<td> Nationality : Indonesia </td>
+			</tr>
+			<tr>
+				<td> Living place : Indonesia </td>
+			</tr>
+			</table>
+			<br>
+			<h2>Contact</h2>
+				<br>
+				<table>
+			  <tr>
+				<th>Media</th>
+				<th>Contact</th>
+			  </tr>
+			  <tr>
+				<td>Instagram</td>
+				<td>@enlightarts</td>
+			  </tr>
+			  <tr>
+				<td>Email</td>
+				<td>grobelwonkerwashere@gmail.com</td>
+			  </tr>
+			  <tr>
+				<td>Twitter</td>
+				<td>@enlightentc</td>
+			  </tr>
+			  <tr>
+				<td>Furry Amino</td>
+				<td><a href="http://aminoapps.com/p/bh18fd">http://aminoapps.com/p/bh18fd</td>
+			  </tr>
+			  </table>
+		</div>
+<!–– Batas Hidup ––>
+		<div id="cv">
+			<h2>Skills</h2>
+			<br>
+			<table>
+		  <tr>
+			<th>No.</th>
+			<th>Skill</th>
+			<th>Profesionality</th>
+		  </tr>
+		  <tr>
+			<td>1.</td>
+			<td>Drawing </td>
+			<td>3.1/5</td>
+		  </tr>
+		  <tr>
+			<td>2.</td>
+			<td>Web Development</td>
+			<td>3.0/5</td>
+		  </tr>
+		  <tr>
+			<td>3.</td>
+			<td>C Language</td>
+			<td>4.0/5</td>
+		  </tr>
+		  <tr>
+			<td>4.</td>
+			<td>Unity Game Engine</td>
+			<td>3.2/5</td>	
+		  </tr>
+		</table>
+					
+		<h2>Formal Education</h2>
+			<br>
+			<table>
+		  <tr>
+			<th>Education</th>
+			<th>Place</th>
+			<th>Year</th>
+		  </tr>
+
+		  <tr>
+			<td>Highschool- Math & science</td>
+			<td>SMAN 71 Jakarta, Indonesia</td>
+			<td>2017</td>
+		  </tr>
+		  <tr>
+			<td>College- Majoring Informatics</td>
+			<td>Institut Teknologi Sepuluh Nopember</td>
+			<td>Present</td>
+		  </tr>
+		</table>
+	</div>
+</div>
+<!–– Batas Hidup ––>
+		<div class="column side" style="background-color:#90f690; padding: 10px 15px;">
+		<p class="sidebar" style="background-color:#2bd12b;"> FAQ </p>
+		<p class="sidebar"> OH WHAT'S NEW? </p>
+			<p> Nothing. </p>
+		<p class="sidebar"> OH CAN I CONTACT YOU? </p>
+			<p> Sure. </p>
+		</div>
+	</div>
+	<div class="footer">2018 EnlightenTech. All rights reserved. </div>
+	</div>
+	
+<script>
+	function Check (a) {
+		var x = document.getElementById("cv");
+		var y = document.getElementById("profile");
+		if (a==1){
+			x.style.display = "block";
+			y.style.display = "none";
+			}
+		else if (a==2){
+			y.style.display = "block";
+			x.style.display = "none";
+		}
+	}
+	</script>
+
+</body>
+</html>
