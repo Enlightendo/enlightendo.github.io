@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+	<link rel="stylesheet" href="tutorial.css">
+	<title>Document</title>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script>
+
+        var scene = new THREE.Scene();
+
+        var camera = new THREE.PerspectiveCamera(
+            60,                                   // Field of view
+            window.innerWidth/window.innerHeight, // Aspect ratio
+            0.1,                                  // Near clipping pane
+            1000                                  // Far clipping pane
+        );
+        camera.position.set(0,30,50);
+        camera.lookAt(new THREE.Vector3(0,15,0))
+
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setClearColor( 0xfff6e6 );
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        document.body.appendChild( renderer.domElement );
+
+        var ambientLight = new THREE.AmbientLight( 0xffffff, 0.2 );
+        scene.add( ambientLight );
+
+        var pointLight = new THREE.PointLight( 0xffffff, 1 );
+        pointLight.position.set( 25, 50, 25 );
+        pointLight.castShadow = true;
+        pointLight.shadow.mapSize.width = 1024;
+        pointLight.shadow.mapSize.height = 1024;
+        scene.add( pointLight );
+
+        var shadowMaterial = new THREE.ShadowMaterial( { color: 0xeeeeee } );
+        shadowMaterial.opacity = 0.5;
+        
+        var groundMesh = new THREE.Mesh(
+            new THREE.BoxGeometry( 100, .1, 100 ),
+            shadowMaterial
+        );
+        groundMesh.receiveShadow = true;
+
+        scene.add( groundMesh );
+
+        var group = new THREE.Group();
+
+        var geometry = new THREE.BoxGeometry(50,8,20);
+        var material = new THREE.MeshLambertMaterial({color:0xFFCC00});
+        var cube = new THREE.Mesh(geometry,material); 
+        cube.position.y=5;
+        cube.position.z=10;
+        group.add(cube);
+    
+//bodyup        
+        var geometry = new THREE.BoxGeometry(20,15,20);
+        var material = new THREE.MeshLambertMaterial({color:0xFFCC00});
+        var cube = new THREE.Mesh(geometry,material); 
+        cube.position.y=10;
+        cube.position.z=10;
+        group.add(cube);   
+//garis pintu
+        var geometry = new THREE.BoxGeometry(0.5,15,21);
+        var material = new THREE.MeshLambertMaterial({color:0x2e2019 });
+        var cube = new THREE.Mesh(geometry,material); 
+        cube.position.y=9;
+        cube.position.z=10;
+        group.add(cube);      
+//garis kaca
+        var geometry = new THREE.BoxGeometry(0.5,15,18);
+        var material = new THREE.MeshLambertMaterial({color:0x2e2019 });
+        var cube = new THREE.Mesh(geometry,material); 
+        cube.position.y=9;
+        cube.position.x=10;
+        cube.position.z=10;
+        group.add(cube);     
+
+//garis kaca
+        function kaca(xpos,zpos){
+            var geometry = new THREE.BoxGeometry(0.5,7  ,8);
+            var material = new THREE.MeshLambertMaterial({color:0x2e2019 });
+            var cube = new THREE.Mesh(geometry,material); 
+            cube.rotation.y=Math.PI / 2;
+            cube.position.y=13;
+            cube.position.x=xpos;
+            cube.position.z=zpos;
+            group.add(cube);   
+            return cube;
+        }
+        var kacas = [ 
+            kaca(5,20),
+            kaca(-5,20),
+            kaca(5,0),
+            kaca(-5,0),
+        ];
+//roda
+        var geometry = new THREE.CylinderGeometry(5,5,4,8);
+        function roda(geometry, posx, posy, posz){
+			geometry.center();
+            var material = new THREE.MeshLambertMaterial({color:0x3d3d3d});
+            var cylinder = new THREE.Mesh(geometry,material); 
+            cylinder.rotation.x = -Math.PI / 2;
+            group.add(cylinder);
+            cylinder.position.x=posx;
+            cylinder.position.y=posy;
+            cylinder.position.z=posz;
+            return cylinder;
+        }
+        var cylinders = [ 
+            roda(geometry, 15, 0, 0),
+            roda(geometry, 15, 0, 20),
+            roda(geometry, -15, 0, 0),
+            roda(geometry, -15, 0, 20),
+        ];
+        
+//lampu
+        function lampu(xpos, ypos, zpos){
+            var geometry = new THREE.CylinderBufferGeometry(2,2,1,8);
+            light = new THREE.SpotLight( 0xFFFFFF, 2, 200 );
+            light.add( new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xFFFFFF } ) ) );
+            light2 = new THREE.PointLight( 0xFFFFFF, 1, 20 );
+            light.rotation.z = Math.PI / 2;
+            light.position.x = xpos;
+            light.position.y = ypos;
+            light.position.z = zpos;
+            light2.position.set(xpos+5,ypos,zpos);
+            light.target.position.set(100+xpos, 0, 10);
+            group.add(light.target);
+            group.add( light );
+            group.add(light2);
+            
+            return light;
+        }
+        var lamps = [ 
+            lampu(25, 5, 3),
+            lampu(25, 5, 17),
+        ];
+//lampu belakang
+            function blamp(xpos, ypos, zpos){
+            var geometry = new THREE.BoxBufferGeometry(3,2,1);
+            light = new THREE.SpotLight( 0xf01f1f, 2, 200 );
+            light.add( new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xf01f1f } ) ) );
+            light2 = new THREE.PointLight( 0xf01f1f, 1, 10 );
+            light.rotation.y = Math.PI / 2;
+            light.position.x = xpos;
+            light.position.y = ypos;
+            light.position.z = zpos;
+            light2.position.set(xpos-5,ypos,zpos);
+            light.target.position.set(xpos-50, 0, 10);
+            group.add(light.target);
+            group.add( light );
+            group.add(light2);
+            
+            return light;
+        }
+        var blamps = [ 
+            blamp(-25, 5, 3),
+            blamp(-25, 5, 17),
+        ];
+        scene.add(group);
+
+//jalan
+        var geometry = new THREE.PlaneGeometry(200,50);
+        var material = new THREE.MeshLambertMaterial({color:0x9a9a9a});
+        var jalan = new THREE.Mesh(geometry,material); 
+        jalan.rotation.x= -Math.PI / 2;
+        jalan.position.y=-4.5;
+        jalan.position.z=11;
+        scene.add(jalan);
+            
+        
+		var loader = new THREE.FontLoader();
+		loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+            var geometry = new THREE.TextGeometry( 'Press Keyboard to move/stop the car', {
+				font: font,
+				size: 10,
+				height: 1,
+				curveSegments: 0,
+				bevelEnabled: true,
+				bevelThickness: 0.5,
+				bevelSize: 0.05,
+				bevelOffset: 0,
+				bevelSegments: 2,
+			} );
+			var material = new THREE.MeshLambertMaterial( {color: 0x368BC1} );
+			var text = new THREE.Mesh( geometry, material );
+			geometry.center();
+			text.position.z=-30;
+			text.position.y=40;
+			scene.add(text);
+
+            var geometry = new THREE.TextGeometry( '<= Drag and drop to rotate camera =>', {
+				font: font,
+				size: 8,
+				height: 1,
+				curveSegments: 0,
+				bevelEnabled: true,
+				bevelThickness: 0.5,
+				bevelSize: 0.05,
+				bevelOffset: 0,
+				bevelSegments: 2,
+			} );
+			var material = new THREE.MeshLambertMaterial( {color: 0x368BC1} );
+			var text = new THREE.Mesh( geometry, material );
+			geometry.center();
+			text.position.z=-30;
+			text.position.y=20;
+			scene.add(text);
+        });
+
+        var controls = new THREE.OrbitControls( camera, renderer.domElement );
+        controls.target = new THREE.Vector3(0,15,0);
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.enableDamping=true; //Damping
+        controls.dampingFactor = 0.05; //Damping
+        controls.autoRotate = false;
+        controls.autoRotateSpeed= 10;
+   
+        window.addEventListener( 'resize', onWindowResize, false );
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        } 
+        controls.addEventListener( 'change', function() { renderer.render(scene, camera); } );
+        var a=0.5;
+        var gerak=0;
+        function animate() {
+            requestAnimationFrame( animate );
+            if(gerak==1){
+                group.position.x+=a;
+                cylinders.forEach((cylinder) => {
+                cylinder.rotation.y +=a/10;
+            }); 
+            }
+            if(gerak==0){
+                group.position.x==0;
+            }
+            if(group.position.x>80){
+                a=-0.5;
+            }
+            if(group.position.x<-80){
+                a=0.5;
+            }
+            controls.update();
+
+            renderer.render( scene, camera );
+        }
+        
+        function toMove(){
+            if(gerak==1)gerak=0;
+            else if(gerak==0)gerak=1;
+        }
+        window.addEventListener("keypress", toMove);
+        animate(); 
+        </script>
+</body>
+</html>
